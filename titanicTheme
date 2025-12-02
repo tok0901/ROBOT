@@ -1,0 +1,29 @@
+//音声出力関数(TitanicTheme)
+void outputAudioTitanicTheme(){
+
+  //音符数
+  int notesNumTitanic = 44;
+
+  //楽譜(25列区切り)
+  int titanic[]       = {DO6  ,RE6  ,MI6  ,FA6  ,RA5  ,SI5  ,MI5  ,MI6  ,RE6  ,DO6  ,SI5  ,DO6  ,RE6  ,DO6  ,SI5  ,RA5  ,SO5  ,RA5  ,SO5  ,FA5  ,MI5  ,RE5  ,RA5  ,SI5  ,MI5  ,
+                         MI6  ,RE6  ,DO6  ,SI5  ,DO6  ,RE6  ,DO6  ,SI5  ,RA5  ,SO5  ,RA5  ,SO5  ,NONE ,SO5  ,RA5  ,SI4  ,DO5  ,SI4  ,RA4  ,};
+
+  //音符長さ(25列区切り)
+  int delaysTitanic[] = {2400 ,600  ,1200 ,1200 ,2400 ,1800 ,600  ,1200 ,600  ,600  ,1200 ,600  ,600  ,1200 ,600  ,600  ,600  ,1200 ,600  ,2400 ,1200 ,1200 ,2400 ,1800 ,600  ,
+                         1200 ,600  ,600  ,1200 ,600  ,600  ,1200 ,600  ,600  ,600  ,1200 ,500  ,100  ,600  ,1200 ,600  ,1200 ,1200 ,2400 ,};
+
+  //楽譜再生
+  for(int i=0;i<notesNumTitanic;i++){
+    ledcWriteTone(CHANNEL,titanic[i]);       //周波数(音階)指定
+    if(titanic[i] == 0){
+      ledcWrite(CHANNEL,NONE);               //消音
+    }
+    else{
+      ledcWrite(CHANNEL,VOLUME);             //ボリューム指定
+    }
+    delay(delaysTitanic[i]);                 //拍数指定
+  }
+  
+  ledcWrite(CHANNEL,NONE);                   //音声停止
+
+}
