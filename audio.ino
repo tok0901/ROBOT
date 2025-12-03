@@ -60,7 +60,7 @@
 
 //グローバル変数宣言
 #define CHANNEL    0        //チャンネル
-#define VOLUME     1        //ボリューム
+#define VOLUME     5        //ボリューム
 
 void setup() {
   
@@ -72,17 +72,20 @@ void setup() {
   ledcSetup(CHANNEL,frequency,resolution);
   ledcAttachPin(buzzerPin,0);
 
-  //outputAudioJamesBondTheme();
+  outputAudioTitanicTheme();
+  delay(70000);
+  outputAudioNextMessage();
 
-  delay(5000);
+  outputAudioMissionImpossibleTheme();
+  delay(80000);
+  outputAudioNextMessage();
 
-  //outputAudioMissionImpossibleTheme();
-
-  delay(5000);
-
-  //outputAudioTitanicTheme();
-
-  delay(5000);
+  outputAudioTitanicTheme();
+  //delay(5000); 
+  
+  // outputAudioMessage(DO4,VOLUME,500,500);
+  // outputAudioMessage(MI4,VOLUME,500,500);
+  // outputAudioMessage(SO4,VOLUME,500,500);
 
   Serial.begin(9600);
 }
@@ -92,13 +95,24 @@ void loop() {
   delay(1000);
 }
 
-void outputAudioTest(int volume){
+//楽曲合図メッセージ関数
+void outputAudioNextMessage(){
+
+  outputAudioMessage(DO4,VOLUME,500,500);
+  outputAudioMessage(MI4,VOLUME,500,500);
+  outputAudioMessage(SO4,VOLUME,500,500);
+
+}
+
+//音声出力_消音出力関数
+void outputAudioMessage(int note,int volume,int outDelay,int noneDelay){
   
-  ledcWriteTone(CHANNEL,DO4);
+  ledcWriteTone(CHANNEL,note);
   ledcWrite(CHANNEL,volume);
-  delay(3000);
+  delay(outDelay);
   ledcWriteTone(CHANNEL,NONE);
   ledcWrite(CHANNEL,NONE);
+  delay(noneDelay);
 
 }
 
