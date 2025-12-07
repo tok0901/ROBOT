@@ -4,21 +4,27 @@
 //音階一覧
 #define NONE    0   //消音
 
-#define DO3     131 //ド    (C3)
+#define DO2      66 //ド    (C2)
+#define DO3     131 //      (C3)
 #define DO4     262 //      (C4)	  262
 #define DO5     523 //      (C5)	  523
 #define DO6    1046 //      (C6)    1046
-#define DO4_C   277 //ド#   (C#4)	  277
+#define DO2_C    69 //ド#　 (C#2)
+#define DO4_C   277 //      (C#4)	  277
 #define DO5_C   554 //      (C#5)   554
 #define DO6_C  1108 //      (C#6)   1108
+#define DO4_F   494 //ドb   (Cb4)
 
-#define RE3     147 //レ    (D3)
+#define RE2      74 //レ    (D2)
+#define RE3     147 //      (D3)
 #define RE4     294 //      (D4)	  294
 #define RE5     588 //　    (D5)    588
 #define RE6    1176 //      (D6)    1176
+#define RE
 #define RE4_C   311 //レ#   (D#4)	  311
 #define RE5_C   622 //      (D#5)
-#define RE4_F   277 //レ♭  (Db4)   277
+#define RE2_F    69 //レ♭  (Db2)
+#define RE4_F   277 //      (Db4)   277
 #define RE5_F   554 //      (Db5)
 
 #define MI3     165 //ミ    (E3)
@@ -51,43 +57,54 @@
 #define RA4_C   466 //ラ#   (A#4)	  466
 #define RA5_C   932 //      (A#5)   932
 #define RA4_F   415 //ラ♭  (Ab4)   415
+#define RA5_F   830 //      (Ab5)
 
 #define SI3     247 //シ    (B3)
 #define SI4     494 //      (B4)	  494
 #define SI5     988 //      (B5)    988
-#define SI4_F   466 //シ♭  (Bb4)   466
+#define SI3_F   233 //シb   (Bb3)
+#define SI4_F   466 //      (Bb4)   466
 #define SI5_F   932 //      (Bb5)
 
 //グローバル変数宣言
 #define CHANNEL    0        //チャンネル
+#define CHANNEL_A  1        //チャンネルA
 #define VOLUME     5        //ボリューム
 
 void setup() {
   
   //設定値定義
-  int frequency  = 1000;    //初期周波数
+  int frequency  = 440;     //初期周波数
   int resolution = 8;       //解像度
   int buzzerPin  = 4;       //ピン番号(スピーカーへPWM出力)
+
+  Serial.begin(9600);
 
   ledcSetup(CHANNEL,frequency,resolution);
   ledcAttachPin(buzzerPin,0);
 
+  /*/Titanic/
+  Serial.println("Titanic");
+  outputAudioNextMessage();
   outputAudioTitanicTheme();
   delay(70000);
-  outputAudioNextMessage();
+  //*/
 
+  /*MissionImpossible/*
+  Serial.println("MissionImpossible");
+  outputAudioNextMessage();
   outputAudioMissionImpossibleTheme();
   delay(80000);
-  outputAudioNextMessage();
+  //*/
 
-  outputAudioTitanicTheme();
-  //delay(5000); 
-  
-  // outputAudioMessage(DO4,VOLUME,500,500);
-  // outputAudioMessage(MI4,VOLUME,500,500);
-  // outputAudioMessage(SO4,VOLUME,500,500);
+  //JamesBond
+  Serial.println("JamesBond");
+  //outputAudioNextMessage();
+  outputAudioMessage(DO2,VOLUME,500,500);
+  outputAudioJamesBondTheme();
+  delay(5000); 
+  //*/
 
-  Serial.begin(9600);
 }
 
 void loop() {
@@ -99,8 +116,9 @@ void loop() {
 void outputAudioNextMessage(){
 
   outputAudioMessage(DO4,VOLUME,500,500);
-  outputAudioMessage(MI4,VOLUME,500,500);
-  outputAudioMessage(SO4,VOLUME,500,500);
+  outputAudioMessage(DO4,VOLUME,500,500);
+  outputAudioMessage(DO4,VOLUME,500,500);
+  outputAudioMessage(DO6,VOLUME,1000,1000);
 
 }
 
@@ -120,23 +138,30 @@ void outputAudioMessage(int note,int volume,int outDelay,int noneDelay){
 void outputAudioJamesBondTheme(){
 
   //音符数
-  int notesNumJames  = 132;
+  int notesNumJames  = 214;
 
   //楽譜(25列区切り)
-  int james[]        = {SI4  ,SO4  ,NONE ,SO4  ,DO5  ,SO4  ,NONE ,SO4  ,DO5_C,SO4  ,NONE ,SO4  ,DO5_C,SO4  ,NONE ,SO4  ,SI5  ,SO5  ,NONE ,SO5  ,DO6  ,SO5  ,NONE ,SO5  ,DO6_C,
-                        SO5  ,NONE ,SO5  ,DO6_C,MI5  ,SO5  ,MI6_F,RE6  ,SO5  ,RA5_C,SI5  ,SO4  ,RA4  ,SO4  ,FA4_C,MI4  ,DO4_C,MI5  ,SO5  ,MI6_F,RE6  ,SO5  ,RA5_C,SI5  ,SO5  ,
-                        RA5  ,SO5  ,FA5_C,RE5_C,MI5  ,NONE ,MI5  ,NONE ,MI5  ,NONE ,MI5  ,FA5_C,MI5  ,FA5_C,SO5  ,NONE ,SO5  ,NONE ,SO5  ,FA5_C,MI5  ,FA5_C,MI5  ,NONE ,MI5  ,
-                        NONE ,MI5  ,FA5_C,MI5  ,FA5_C,SO5  ,NONE ,SO5  ,SI5  ,SO5  ,FA5_C,NONE ,SI5  ,NONE ,SI5  ,NONE ,SI3  ,NONE ,SI3  ,SI5  ,NONE ,SI5  ,NONE ,SI3  ,NONE ,
-                        SI3  ,SI5  ,MI5  ,SI5  ,NONE ,SI5  ,MI5  ,MI4  ,SO4  ,MI5_F,RE5  ,SO3  ,SI3  ,FA4  ,MI4  ,SI4  ,RE5  ,SI5_F,RA5  ,MI5  ,SO5  ,MI6_F,RE6  ,RE4  ,NONE ,
-                        RE4  ,NONE ,SO3  ,FA3  ,MI3  ,RE3  ,DO3  ,}; 
+  //184
+  int james[]        = {SI5  ,NONE ,SI5  ,NONE ,SI3  ,NONE ,SI3  ,SI5  ,NONE ,SI5  ,NONE ,SI3  ,NONE ,SI3  ,SI5  ,MI5  ,SI5  ,NONE ,SI5  ,MI5  ,SI4  ,DO5  ,DO5_C,DO5  ,SI5  ,
+                        DO6  ,DO6_C,DO6  ,SI4  ,DO5  ,DO5_C,DO5  ,SI5  ,DO6  ,DO6_C,DO6  ,SI4  ,SO4  ,NONE ,SO4  ,DO5  ,SO4  ,NONE ,SO4  ,DO5_C,SO4  ,NONE ,SO4  ,DO5_C,SO4  ,
+                        NONE ,SO4  ,SI5  ,SO5  ,NONE ,SO5  ,DO6  ,SO5  ,NONE ,SO5  ,DO6_C,SO5  ,NONE ,SO5  ,DO6_C,SO5  ,NONE ,SO5  ,SI4  ,SO4  ,NONE ,SO4  ,DO5  ,SO4  ,NONE ,
+                        SO4  ,DO5_C,SO4  ,NONE ,SO4  ,DO5_C,SO4  ,NONE ,SO4  ,SI5  ,SO5  ,NONE ,SO5  ,DO6  ,SO5  ,NONE ,SO5  ,DO6_C,SO5  ,NONE ,SO5  ,DO6_C,MI5  ,SO5  ,MI6_F,
+                        RE6  ,SO5  ,RA5_C,SI5  ,SO4  ,RA4  ,SO4  ,FA4_C,MI4  ,DO4_C,MI5  ,SO5  ,MI6_F,RE6  ,SO5  ,RA5_C,SI5  ,SO5  ,RA5  ,SO5  ,FA5_C,RE5_C,MI5  ,NONE ,MI5  ,
+                        SO5  ,MI6_F,RE6  ,SO5  ,RA5_C,SI5  ,SO5  ,RA5  ,SO5  ,FA5_C,RE5_C,MI5  ,NONE ,MI5  ,NONE ,MI5  ,NONE ,MI5  ,FA5_C,MI5  ,FA5_C,SO5  ,NONE ,SO5  ,NONE ,
+                        SO5  ,FA5_C,MI5  ,FA5_C,MI5  ,NONE ,MI5  ,NONE ,MI5  ,FA5_C,MI5  ,FA5_C,SO5  ,NONE ,SO5  ,SI5  ,SO5  ,FA5_C,NONE ,SI5  ,NONE ,SI5  ,NONE ,SI3  ,NONE ,
+                        SI3  ,SI5  ,NONE ,SI5  ,NONE ,SI3  ,NONE ,SI3  ,SI5  ,MI5  ,SI5  ,NONE ,SI5  ,MI5  ,MI4  ,SO4  ,MI5_F,RE5  ,SO3  ,SI3  ,FA4  ,MI4  ,SI4  ,RE5  ,SI5_F,
+                        RA5  ,MI5  ,SO5  ,MI6_F,RE6  ,RE4  ,NONE ,RE4  ,NONE ,SO3  ,FA3  ,MI3  ,RE3  ,DO3  ,}; 
 
   //音符長さ(25列区切り)
-  int delaysJames[]  = {420  ,60   ,20   ,500  ,420  ,60   ,20   ,500  ,420  ,60   ,20   ,500  ,420  ,60   ,20   ,500  ,420  ,60   ,20   ,500  ,420  ,60   ,20   ,500  ,420  ,
-                        60   ,20   ,500  ,1000 ,400  ,450  ,200  ,1000 ,200  ,300  ,2000 ,400  ,100  ,100  ,1000 ,400  ,2000 ,400  ,450  ,200  ,1000 ,200  ,300  ,2000 ,400  ,
-                        100  ,100  ,1000 ,400  ,2000 ,20   ,400  ,20   ,100  ,20   ,450  ,400  ,100  ,450  ,400  ,20   ,100  ,20   ,450  ,400  ,100  ,450  ,400  ,20   ,100  ,
-                        20   ,450  ,400  ,100  ,450  ,400  ,20   ,100  ,400  ,100  ,500  ,450  ,400  ,20   ,250  ,200  ,100  ,20   ,400  ,400  ,20   ,250  ,200  ,100  ,20   ,
-                        400  ,400  ,100  ,100  ,60   ,400  ,200  ,400  ,450  ,200  ,400  ,400  ,450  ,200  ,400  ,400  ,450  ,200  ,400  ,400  ,450  ,200  ,2000 ,400  ,60   ,
-                        400  ,200  ,1000 ,60   ,60   ,60   ,2000 ,};
+  int delaysJames[]  = {400  ,20   ,250  ,200  ,100  ,20   ,400  ,400  ,20   ,250  ,200  ,100  ,20   ,400  ,400  ,100  ,100  ,60   ,400  ,200  ,1000 ,1000 ,1000 ,1000 ,1000 ,
+                        1000 ,1000 ,1000 ,1000 ,1000 ,1000 ,1000 ,1000 ,1000 ,1000 ,1000 ,420  ,60   ,20   ,500  ,420  ,60   ,20   ,500  ,420  ,60   ,20   ,500  ,420  ,60   ,
+                        20   ,500  ,420  ,60   ,20   ,500  ,420  ,60   ,20   ,500  ,420  ,60   ,20   ,500  ,420  ,60   ,20   ,500  ,420  ,60   ,20   ,500  ,420  ,60   ,20   ,
+                        500  ,420  ,60   ,20   ,500  ,420  ,60   ,20   ,500  ,420  ,60   ,20   ,500  ,420  ,60   ,20   ,500  ,420  ,60   ,20   ,500  ,1000 ,400  ,450  ,200  ,
+                        1000 ,200  ,400  ,2000 ,400  ,100  ,100  ,1000 ,400  ,2000 ,400  ,450  ,200  ,1000 ,200  ,400  ,2000 ,400  ,100  ,100  ,1000 ,400  ,2000 ,20   ,400  ,
+                        450  ,200  ,1000 ,200  ,400  ,2000 ,400  ,100  ,100  ,1000 ,400  ,2000 ,20   ,400  ,20   ,100  ,20   ,450  ,400  ,100  ,450  ,400  ,20   ,100  ,20   ,
+                        450  ,400  ,100  ,450  ,400  ,20   ,100  ,20   ,450  ,400  ,100  ,450  ,400  ,20   ,100  ,400  ,100  ,500  ,450  ,400  ,20   ,250  ,200  ,100  ,20   ,
+                        400  ,400  ,20   ,250  ,200  ,100  ,20   ,400  ,400  ,100  ,100  ,60   ,400  ,200  ,400  ,450  ,200  ,450  ,400  ,450  ,200  ,450  ,400  ,450  ,200  ,
+                        450  ,400  ,450  ,200  ,2000 ,400  ,60   ,400  ,200  ,1000 ,60   ,60   ,60   ,2000 ,};
   
   //楽譜再生
   for(int i=0;i<notesNumJames;i++){
